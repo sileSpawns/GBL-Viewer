@@ -24,6 +24,12 @@ models = [
         "emoji": "👨‍🚀"
     },
     {
+        "name": "Tower",
+        "description": "3D tower model",
+        "url": "https://raw.githubusercontent.com/sileSpawns/GBL-Viewer/main/models/tower.glb",
+        "emoji": "🏗️"
+    },
+    {
         "name": "Drone",
         "description": "High-tech quadcopter drone model",
         "url": "https://modelviewer.dev/shared-assets/models/Drone.glb",
