@@ -142,7 +142,6 @@ grid_html = """
         color: #80ff00;
       }
       
-      /* Modal Styles */
       .modal {
         display: none;
         position: fixed;
@@ -152,7 +151,7 @@ grid_html = """
         height: 100%;
         background: rgba(0, 0, 0, 0.95);
         z-index: 9999;
-        padding: 20px;
+        padding: 0;
       }
       .modal.active {
         display: flex;
@@ -192,9 +191,10 @@ grid_html = """
         transform: scale(1.05);
       }
       .modal-content {
-        width: 95%;
-        height: 90%;
-        max-width: 1200px;
+        width: 90vw;
+        height: 90vh;
+        max-width: 1900px;
+        max-height: 1050px;
       }
     </style>
 </head>
@@ -244,6 +244,9 @@ grid_html += """
         camera-controls
         auto-rotate
         ar
+        camera-orbit="0deg 75deg 2.5m"
+        min-camera-orbit="auto auto auto"
+        max-camera-orbit="auto auto auto"
         style="width: 100%; height: 100%; border-radius: 8px;">
       </model-viewer>
     </div>
