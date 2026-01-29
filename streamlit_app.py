@@ -3,21 +3,17 @@ from streamlit.components.v1 import html
 
 st.set_page_config(page_title="GBL Viewer", layout="wide", initial_sidebar_state="collapsed")
 
-# Custom CSS for better styling
+# Hide all Streamlit UI elements
 st.markdown("""
 <style>
-    [data-testid="stAppViewContainer"] { background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%); }
-    [data-testid="stHeader"] { background: rgba(0,0,0,0.3); }
-    .stTitle { color: #00d4ff !important; font-size: 2.5rem !important; font-weight: 700 !important; }
-    .stMarkdown { color: #e0e0e0 !important; }
+    [data-testid="stAppViewContainer"] { padding: 0 !important; background: #0f0f1e !important; }
+    [data-testid="stHeader"] { display: none !important; }
+    [data-testid="stToolbar"] { display: none !important; }
+    .stMainBlockContainer { padding: 0 !important; }
+    .stPage { width: 100vw; margin: 0; padding: 0; }
+    html, body { width: 100vw; height: 100vh; overflow: hidden !important; margin: 0; padding: 0; }
 </style>
 """, unsafe_allow_html=True)
-
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    st.markdown("# 🎨 3D Model Viewer")
-st.markdown("**Explore, rotate, and preview stunning 3D models in your browser**", unsafe_allow_html=True)
-st.markdown("---")
 
 # Sample models array
 models = [
@@ -69,16 +65,37 @@ grid_html = """
     <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body { margin: 0; padding: 0; width: 100%; height: 100%; }
-      body { background: #0f0f1e; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-y: auto; }
-      body.modal-open { overflow: hidden; width: 100%; height: 100vh; }
-      .container { max-width: 1400px; margin: 0 auto; }
+      html, body { 
+        margin: 0; 
+        padding: 0; 
+        width: 100vw; 
+        height: 100vh; 
+        overflow: hidden;
+        background: #0f0f1e;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      body.modal-open { overflow: hidden !important; }
+      
+      .container { 
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+      
       .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-        gap: 24px;
-        padding: 20px 0;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        width: 100%;
+        max-width: 1800px;
+        height: auto;
+        max-height: calc(100vh - 40px);
       }
+      
       .card {
         background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
         border-radius: 12px;
@@ -86,63 +103,63 @@ grid_html = """
         border: 1px solid #00d4ff44;
         transition: all 0.3s ease;
         box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
       }
+      
       .card:hover {
         transform: translateY(-8px);
         border-color: #00d4ff88;
         box-shadow: 0 12px 48px rgba(0, 212, 255, 0.2);
       }
+      
       .card-header {
-        padding: 16px;
+        padding: 12px;
         background: linear-gradient(135deg, #00d4ff22 0%, #0099ff22 100%);
         border-bottom: 1px solid #00d4ff44;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-shrink: 0;
       }
+      
       .card-title {
-        font-size: 20px;
+        font-size: 16px;
         font-weight: 700;
         color: #00d4ff;
-        margin: 0 0 8px 0;
-      }
-      .card-emoji {
-        font-size: 28px;
-        margin-right: 8px;
-      }
-      .card-description {
-        font-size: 13px;
-        color: #b0b0b0;
         margin: 0;
       }
+      
+      .card-emoji {
+        font-size: 20px;
+        margin-right: 8px;
+      }
+      
       .fullscreen-btn {
         background: #00d4ff;
         color: #0f0f1e;
         border: none;
-        padding: 8px 12px;
-        border-radius: 6px;
+        padding: 6px 10px;
+        border-radius: 4px;
         cursor: pointer;
         font-weight: 600;
-        font-size: 12px;
+        font-size: 11px;
         transition: all 0.2s ease;
         flex-shrink: 0;
       }
+      
       .fullscreen-btn:hover {
         background: #00ffff;
         transform: scale(1.05);
       }
+      
       model-viewer {
         width: 100%;
-        height: 340px;
+        flex: 1;
+        min-height: 200px;
         background: linear-gradient(135deg, #0a0a15 0%, #1a1a2e 100%);
         display: block;
-      }
-      .controls {
-        padding: 12px 16px;
-        background: rgba(0, 0, 0, 0.3);
-        border-top: 1px solid #00d4ff44;
-        font-size: 12px;
-        color: #80ff00;
       }
       
       /* Modal Styles - Clean Fullscreen Viewer */
@@ -155,7 +172,7 @@ grid_html = """
         bottom: 0;
         width: 100vw;
         height: 100vh;
-        background: rgba(0, 0, 0, 0.98);
+        background: #000;
         z-index: 9999;
         margin: 0;
         padding: 0;
@@ -163,9 +180,11 @@ grid_html = """
         align-items: center;
         justify-content: center;
       }
+      
       .modal.active {
         display: flex;
       }
+      
       .modal-header {
         position: absolute;
         top: 20px;
@@ -173,9 +192,7 @@ grid_html = """
         display: flex;
         z-index: 10001;
       }
-      .modal-title {
-        display: none;
-      }
+      
       .close-btn {
         background: #ff3333;
         color: white;
@@ -187,10 +204,12 @@ grid_html = """
         font-size: 14px;
         transition: all 0.2s ease;
       }
+      
       .close-btn:hover {
         background: #ff5555;
         transform: scale(1.05);
       }
+      
       .modal-viewer-container {
         display: flex;
         align-items: center;
@@ -201,6 +220,7 @@ grid_html = """
         margin: 0;
         overflow: hidden;
       }
+      
       #fullscreenViewer {
         width: 90%;
         height: 90%;
@@ -219,11 +239,11 @@ for model in models:
     grid_html += f"""
       <div class="card">
         <div class="card-header">
-          <div>
-            <div class="card-title"><span class="card-emoji">{model["emoji"]}</span>{model["name"]}</div>
-            <p class="card-description">{model["description"]}</p>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="card-emoji">{model["emoji"]}</span>
+            <span class="card-title">{model["name"]}</span>
           </div>
-          <button class="fullscreen-btn" onclick="openFullscreen('{model["url"]}', '{model["name"]}')">⛶ Fullscreen</button>
+          <button class="fullscreen-btn" onclick="openFullscreen('{model["url"]}', '{model["name"]}')">⛶</button>
         </div>
         <model-viewer
           src="{model["url"]}"
@@ -233,7 +253,6 @@ for model in models:
           auto-rotate
           ar
           style="background: linear-gradient(135deg, #0a0a15 0%, #1a1a2e 100%);"></model-viewer>
-        <div class="controls">💡 Drag to rotate • Scroll to zoom • Click Fullscreen for expanded view</div>
       </div>
 """
 
@@ -244,7 +263,6 @@ grid_html += """
   <!-- Fullscreen Modal -->
   <div id="fullscreenModal" class="modal">
     <div class="modal-header">
-      <h2 class="modal-title" id="modalTitle">3D Model</h2>
       <button class="close-btn" onclick="closeFullscreen()">✕ Close</button>
     </div>
     <div class="modal-viewer-container">
@@ -266,10 +284,8 @@ grid_html += """
     function openFullscreen(modelUrl, modelName) {
       const modal = document.getElementById('fullscreenModal');
       const viewer = document.getElementById('fullscreenViewer');
-      const title = document.getElementById('modalTitle');
       
       viewer.src = modelUrl;
-      title.textContent = modelName;
       modal.classList.add('active');
       document.body.classList.add('modal-open');
     }
@@ -298,13 +314,4 @@ grid_html += """
 </html>
 """
 
-html(grid_html, height=2400)
-
-st.markdown("---")
-st.markdown("""
-<div style="text-align: center; color: #80ff00; padding: 20px;">
-  <p><b>✨ Tips:</b> Drag models to rotate • Scroll to zoom • Use AR for real-world placement</p>
-  <p><small>🔗 <a href="https://github.com/sileSpawns/GBL-Viewer" target="_blank" style="color: #00d4ff;">GitHub Repo</a> | 
-  <a href="https://modelviewer.dev/" target="_blank" style="color: #00d4ff;">Model Viewer Docs</a></small></p>
-</div>
-""", unsafe_allow_html=True)
+html(grid_html, height=1200)
