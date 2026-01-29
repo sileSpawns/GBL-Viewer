@@ -145,7 +145,7 @@ grid_html = """
         color: #80ff00;
       }
       
-      /* Modal Styles - Exactly One Monitor Height */
+      /* Modal Styles - Clean Fullscreen Viewer */
       .modal {
         display: none;
         position: fixed;
@@ -160,27 +160,21 @@ grid_html = """
         margin: 0;
         padding: 0;
         overflow: hidden;
-        flex-direction: column;
+        align-items: center;
+        justify-content: center;
       }
       .modal.active {
         display: flex;
       }
       .modal-header {
+        position: absolute;
+        top: 20px;
+        right: 20px;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px 30px;
-        background: rgba(0, 0, 0, 0.7);
-        border-bottom: 2px solid #00d4ff;
-        flex-shrink: 0;
-        height: 70px;
-        box-sizing: border-box;
+        z-index: 10001;
       }
       .modal-title {
-        font-size: 24px;
-        font-weight: 700;
-        color: #00d4ff;
-        margin: 0;
+        display: none;
       }
       .close-btn {
         background: #ff3333;
@@ -192,7 +186,6 @@ grid_html = """
         font-weight: 600;
         font-size: 14px;
         transition: all 0.2s ease;
-        flex-shrink: 0;
       }
       .close-btn:hover {
         background: #ff5555;
@@ -202,8 +195,8 @@ grid_html = """
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 100vw;
-        height: calc(100vh - 70px);
+        width: 100%;
+        height: 100%;
         padding: 0;
         margin: 0;
         overflow: hidden;
