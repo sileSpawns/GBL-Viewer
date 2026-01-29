@@ -2,29 +2,46 @@ import streamlit as st
 from streamlit.components.v1 import html
 
 st.set_page_config(page_title="GBL Viewer", layout="wide")
-st.title("GBL Viewer — Test Single Model")
+st.title("GBL Viewer")
 
-test_url = "https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+st.markdown("Single test viewer using model-viewer.dev CDN")
 
-# Minimal single viewer HTML
-viewer_html = f"""
+# Follow official model-viewer.dev example exactly
+viewer_html = """
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@1.16.0/dist/model-viewer.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
-<body style="margin: 0; padding: 0; width: 100%; height: 100%;">
-  <model-viewer
-    src="{test_url}"
-    alt="Test Model"
-    style="width: 100%; height: 100%;"
-    shadow-intensity="1"
-    camera-controls
-    auto-rotate>
-  </model-viewer>
+<body>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js"></script>
+    
+    <style>
+      body { margin: 0; background: #f0f0f0; }
+      model-viewer {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+
+    <model-viewer 
+      src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+      ios-src="https://modelviewer.dev/shared-assets/models/Astronaut.usdz"
+      alt="A 3D model of an astronaut"
+      shadow-intensity="1"
+      camera-controls
+      auto-rotate
+      ar>
+    </model-viewer>
+
 </body>
 </html>
 """
 
-html(viewer_html, height=600)
+html(viewer_html, height=900)
+
+st.markdown("---")
+st.markdown("**Debug Info:** Using official model-viewer.dev example code")
