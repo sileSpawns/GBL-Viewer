@@ -6,47 +6,68 @@ st.title("GBL Viewer — Multiple 3D Models")
 
 # List of preview models from modelviewer.dev
 models = [
-    {"name": "Astronaut", "url": "https://modelviewer.dev/shared-assets/models/Astronaut.glb", "poster": "https://modelviewer.dev/shared-assets/press-poster.png"},
-    {"name": "Candle", "url": "https://modelviewer.dev/shared-assets/models/candle.glb", "poster": "https://modelviewer.dev/shared-assets/press-poster.png"},
-    {"name": "Drone", "url": "https://modelviewer.dev/shared-assets/models/Drone.glb", "poster": "https://modelviewer.dev/shared-assets/press-poster.png"},
-    {"name": "Helmet", "url": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb", "poster": "https://modelviewer.dev/shared-assets/press-poster.png"},
-    {"name": "Flight Helmet", "url": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/FlightHelmet/glTF-Binary/FlightHelmet.glb", "poster": "https://modelviewer.dev/shared-assets/press-poster.png"},
-    {"name": "Avocado", "url": "https://modelviewer.dev/shared-assets/models/Avocado.glb", "poster": "https://modelviewer.dev/shared-assets/press-poster.png"},
+    {"name": "Astronaut", "url": "https://modelviewer.dev/shared-assets/models/Astronaut.glb"},
+    {"name": "Candle", "url": "https://modelviewer.dev/shared-assets/models/candle.glb"},
+    {"name": "Drone", "url": "https://modelviewer.dev/shared-assets/models/Drone.glb"},
+    {"name": "Helmet", "url": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb"},
+    {"name": "Flight Helmet", "url": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/FlightHelmet/glTF-Binary/FlightHelmet.glb"},
+    {"name": "Avocado", "url": "https://modelviewer.dev/shared-assets/models/Avocado.glb"},
 ]
 
-# Create a 3x2 grid
-cols = st.columns(2)
-
-for idx, model in enumerate(models):
-    col = cols[idx % 2]
+# Create layout: 3 rows, 2 columns
+for i in range(0, len(models), 2):
+    col1, col2 = st.columns(2)
     
-    with col:
-        st.subheader(model["name"])
-        
-        viewer_html = f"""
+    # First model in row
+    with col1:
+        st.subheader(models[i]["name"])
+        viewer_html_1 = f"""
         <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@1.16.0/dist/model-viewer.min.js"></script>
         <style>
-          body, html {{ margin: 0; padding: 0; }}
           model-viewer {{
             width: 100%;
             height: 400px;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            background: #222;
             border-radius: 8px;
+            display: block;
           }}
         </style>
         <model-viewer
-          src="{model['url']}"
-          alt="{model['name']}"
-          poster="{model['poster']}"
+          src="{models[i]['url']}"
+          alt="{models[i]['name']}"
           shadow-intensity="1"
           camera-controls
           auto-rotate
-          ar
-          ar-modes="webxr scene-viewer quick-look">
+          ar>
         </model-viewer>
         """
-        
-        html(viewer_html, height=450)
+        html(viewer_html_1, height=450)
+    
+    # Second model in row (if it exists)
+    if i + 1 < len(models):
+        with col2:
+            st.subheader(models[i+1]["name"])
+            viewer_html_2 = f"""
+            <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@1.16.0/dist/model-viewer.min.js"></script>
+            <style>
+              model-viewer {{
+                width: 100%;
+                height: 400px;
+                background: #222;
+                border-radius: 8px;
+                display: block;
+              }}
+            </style>
+            <model-viewer
+              src="{models[i+1]['url']}"
+              alt="{models[i+1]['name']}"
+              shadow-intensity="1"
+              camera-controls
+              auto-rotate
+              ar>
+            </model-viewer>
+            """
+            html(viewer_html_2, height=450)
 
 st.markdown("---")
 st.markdown("**Repo:** https://github.com/sileSpawns/GBL-Viewer | **Deploy:** https://share.streamlit.io/sileSpawns/GBL-Viewer/main/streamlit_app.py")
