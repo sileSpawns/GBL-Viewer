@@ -408,7 +408,7 @@ grid_html += """
         camera-controls
         auto-rotate
         ar
-        camera-orbit="0deg 20deg auto">
+        camera-orbit="0deg 75deg auto">
       </model-viewer>
     </div>
   </div>
