@@ -204,15 +204,16 @@ grid_html = """
         justify-content: center;
         width: 100vw;
         height: calc(100vh - 70px);
-        padding: 0;
+        padding: 40px;
         margin: 0;
         overflow: hidden;
+        box-sizing: border-box;
       }
       #fullscreenViewer {
-        width: 100%;
-        height: 100%;
-        max-width: 1920px;
-        max-height: calc(100vh - 70px);
+        width: calc(100% - 80px);
+        height: calc(100% - 80px);
+        max-width: 1600px;
+        max-height: calc(100vh - 150px);
         border-radius: 8px;
       }
     </style>
