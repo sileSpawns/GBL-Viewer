@@ -1,0 +1,40 @@
+{
+  "models": [
+    {
+      "name": "Astronaut",
+      "description": "A 3D astronaut model",
+      "url": "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
+      "usdz": "https://modelviewer.dev/shared-assets/models/Astronaut.usdz"
+    },
+    {
+      "name": "Candle",
+      "description": "A 3D candle model",
+      "url": "https://modelviewer.dev/shared-assets/models/candle.glb",
+      "usdz": null
+    },
+    {
+      "name": "Drone",
+      "description": "A 3D drone model",
+      "url": "https://modelviewer.dev/shared-assets/models/Drone.glb",
+      "usdz": null
+    },
+    {
+      "name": "Damaged Helmet",
+      "description": "A damaged helmet from glTF samples",
+      "url": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb",
+      "usdz": null
+    },
+    {
+      "name": "Flight Helmet",
+      "description": "A flight helmet from glTF samples",
+      "url": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/FlightHelmet/glTF-Binary/FlightHelmet.glb",
+      "usdz": null
+    },
+    {
+      "name": "Avocado",
+      "description": "A 3D avocado model",
+      "url": "https://modelviewer.dev/shared-assets/models/Avocado.glb",
+      "usdz": null
+    }
+  ]
+}
