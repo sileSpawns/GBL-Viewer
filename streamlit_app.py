@@ -94,6 +94,9 @@ grid_html = """
         padding: 16px;
         background: linear-gradient(135deg, #00d4ff22 0%, #0099ff22 100%);
         border-bottom: 1px solid #00d4ff44;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
       .card-title {
         font-size: 20px;
@@ -110,6 +113,21 @@ grid_html = """
         color: #b0b0b0;
         margin: 0;
       }
+      .fullscreen-btn {
+        background: #00d4ff;
+        color: #0f0f1e;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 12px;
+        transition: all 0.2s ease;
+      }
+      .fullscreen-btn:hover {
+        background: #00ffff;
+        transform: scale(1.05);
+      }
       model-viewer {
         width: 100%;
         height: 340px;
@@ -123,6 +141,61 @@ grid_html = """
         font-size: 12px;
         color: #80ff00;
       }
+      
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 9999;
+        padding: 20px;
+      }
+      .modal.active {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-header {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #00d4ff;
+        z-index: 10000;
+      }
+      .modal-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+      }
+      .close-btn {
+        background: #ff3333;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.2s ease;
+      }
+      .close-btn:hover {
+        background: #ff5555;
+        transform: scale(1.05);
+      }
+      .modal-content {
+        width: 95%;
+        height: 90%;
+        max-width: 1200px;
+      }
     </style>
 </head>
 <body>
@@ -134,8 +207,11 @@ for model in models:
     grid_html += f"""
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="card-emoji">{model["emoji"]}</span>{model["name"]}</div>
-          <p class="card-description">{model["description"]}</p>
+          <div>
+            <div class="card-title"><span class="card-emoji">{model["emoji"]}</span>{model["name"]}</div>
+            <p class="card-description">{model["description"]}</p>
+          </div>
+          <button class="fullscreen-btn" onclick="openFullscreen('{model["url"]}', '{model["name"]}')">⛶ Fullscreen</button>
         </div>
         <model-viewer
           src="{model["url"]}"
@@ -146,13 +222,65 @@ for model in models:
           ar
           style="background: linear-gradient(135deg, #0a0a15 0%, #1a1a2e 100%);">
         </model-viewer>
-        <div class="controls">💡 Drag to rotate • Scroll to zoom • Tap AR to preview</div>
+        <div class="controls">💡 Drag to rotate • Scroll to zoom • Click Fullscreen for expanded view</div>
       </div>
 """
 
 grid_html += """
     </div>
   </div>
+
+  <!-- Fullscreen Modal -->
+  <div id="fullscreenModal" class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modalTitle">3D Model</h2>
+      <button class="close-btn" onclick="closeFullscreen()">✕ Close</button>
+    </div>
+    <div id="modalContent" class="modal-content">
+      <model-viewer
+        id="fullscreenViewer"
+        alt="3D Model"
+        shadow-intensity="1"
+        camera-controls
+        auto-rotate
+        ar
+        style="width: 100%; height: 100%; border-radius: 8px;">
+      </model-viewer>
+    </div>
+  </div>
+
+  <script>
+    function openFullscreen(modelUrl, modelName) {
+      const modal = document.getElementById('fullscreenModal');
+      const viewer = document.getElementById('fullscreenViewer');
+      const title = document.getElementById('modalTitle');
+      
+      viewer.src = modelUrl;
+      title.textContent = modelName;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeFullscreen() {
+      const modal = document.getElementById('fullscreenModal');
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeFullscreen();
+      }
+    });
+
+    // Close modal when clicking outside
+    document.getElementById('fullscreenModal').addEventListener('click', (e) => {
+      if (e.target.id === 'fullscreenModal') {
+        closeFullscreen();
+      }
+    });
+  </script>
 </body>
 </html>
 """
