@@ -18,46 +18,39 @@ st.markdown("""
 # Sample models array
 models = [
     {
-        "name": "Astronaut",
-        "description": "A detailed 3D astronaut with spacesuit",
-        "url": "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
-        "emoji": "👨‍🚀"
+        "name": "Wall 100cm",
+        "description": "Wall model 100cm",
+        "url": "https://raw.githubusercontent.com/sileSpawns/GBL-Viewer/main/models/Wall_100cm.glb"
     },
     {
         "name": "Tower",
         "description": "3D tower model",
-        "url": "https://raw.githubusercontent.com/sileSpawns/GBL-Viewer/main/models/tower.glb",
-        "emoji": "🏗️"
+        "url": "https://raw.githubusercontent.com/sileSpawns/GBL-Viewer/main/models/tower.glb"
     },
     {
         "name": "Drone",
         "description": "High-tech quadcopter drone model",
-        "url": "https://modelviewer.dev/shared-assets/models/Drone.glb",
-        "emoji": "🚁"
+        "url": "https://modelviewer.dev/shared-assets/models/Drone.glb"
     },
     {
         "name": "Candle",
         "description": "Realistic 3D candle with lighting",
-        "url": "https://modelviewer.dev/shared-assets/models/candle.glb",
-        "emoji": "🕯️"
+        "url": "https://modelviewer.dev/shared-assets/models/candle.glb"
     },
     {
         "name": "Damaged Helmet",
         "description": "Weathered combat helmet with details",
-        "url": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb",
-        "emoji": "⚔️"
+        "url": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb"
     },
     {
         "name": "Flight Helmet",
         "description": "Classic aviation flight helmet",
-        "url": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/FlightHelmet/glTF-Binary/FlightHelmet.glb",
-        "emoji": "🛩️"
+        "url": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/FlightHelmet/glTF-Binary/FlightHelmet.glb"
     },
     {
         "name": "Avocado",
         "description": "Smooth 3D rendered avocado fruit",
-        "url": "https://modelviewer.dev/shared-assets/models/Avocado.glb",
-        "emoji": "🥑"
+        "url": "https://modelviewer.dev/shared-assets/models/Avocado.glb"
     }
 ]
 
@@ -384,8 +377,8 @@ grid_html = """
     
     <div class="import-section">
       <select class="import-select" id="viewerPosition">
-        <option value="append">➕ Add to End</option>
-        <option value="1">Position 1 (Astronaut)</option>
+        <option value="append">Add to End</option>
+        <option value="1">Position 1 (Wall 100cm)</option>
         <option value="2">Position 2 (Tower)</option>
         <option value="3">Position 3 (Drone)</option>
         <option value="4">Position 4 (Candle)</option>
@@ -406,10 +399,9 @@ for model in models:
       <div class="card" data-model-id="default-{model["name"]}">
         <div class="card-header">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="card-emoji">{model["emoji"]}</span>
             <span class="card-title">{model["name"]}</span>
           </div>
-          <button class="fullscreen-btn" onclick="openFullscreen('{model["url"]}', '{model["name"]}')">⛶</button>
+          <button class="fullscreen-btn" onclick="openFullscreen('{model["url"]}', '{model["name"]}')">[Fullscreen]</button>
         </div>
         <model-viewer
           src="{model["url"]}"
@@ -430,7 +422,7 @@ grid_html += """
   <!-- Fullscreen Modal -->
   <div id="fullscreenModal" class="modal">
     <div class="modal-header">
-      <button class="close-btn" onclick="closeFullscreen()">✕ Close</button>
+      <button class="close-btn" onclick="closeFullscreen()">Close</button>
     </div>
     <div class="modal-viewer-container">
       <model-viewer
@@ -502,11 +494,10 @@ grid_html += """
         <div class="card" data-model-id="${modelId}">
           <div class="card-header">
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span class="card-emoji">📦</span>
               <span class="card-title">${modelName}</span>
             </div>
             <div style="display: flex; gap: 6px;">
-              <button class="fullscreen-btn" onclick="openFullscreen('${modelUrl}', '${modelName}')">⛶</button>
+              <button class="fullscreen-btn" onclick="openFullscreen('${modelUrl}', '${modelName}')">[Fullscreen]</button>
               <button class="fullscreen-btn" style="background: #ff3333; padding: 4px 8px;" onclick="removeModel('${modelId}')">✕</button>
             </div>
           </div>
