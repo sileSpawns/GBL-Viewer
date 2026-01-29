@@ -80,10 +80,29 @@ grid_html = """
         width: 100vw;
         height: 100vh;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         padding: 20px;
         box-sizing: border-box;
+        overflow: hidden;
+      }
+      
+      .page-title {
+        font-size: 48px;
+        font-weight: 700;
+        color: #00d4ff;
+        margin-bottom: 30px;
+        text-align: center;
+        letter-spacing: 2px;
+      }
+      
+      .grid-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        width: 100%;
       }
       
       .grid {
@@ -93,7 +112,7 @@ grid_html = """
         width: 100%;
         max-width: 1800px;
         height: auto;
-        max-height: calc(100vh - 40px);
+        max-height: calc(100vh - 160px);
       }
       
       .card {
@@ -232,7 +251,9 @@ grid_html = """
 </head>
 <body>
   <div class="container">
-    <div class="grid">
+    <div class="page-title">Bosch AR/VR</div>
+    <div class="grid-wrapper">
+      <div class="grid">
 """
 
 for model in models:
@@ -257,6 +278,7 @@ for model in models:
 """
 
 grid_html += """
+      </div>
     </div>
   </div>
 
