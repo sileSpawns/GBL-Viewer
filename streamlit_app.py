@@ -277,6 +277,38 @@ grid_html = """
         display: block;
       }
       
+      /* Mobile Responsive */
+      @media (max-width: 1024px) {
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      
+      @media (max-width: 768px) {
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 15px;
+        }
+        .page-title {
+          font-size: 32px;
+          margin-bottom: 15px;
+        }
+        .import-section {
+          padding: 12px;
+          margin-bottom: 15px;
+          gap: 8px;
+        }
+        .import-input, .import-select {
+          min-width: 200px;
+          font-size: 11px;
+          padding: 8px 10px;
+        }
+        .import-btn {
+          padding: 8px 12px;
+          font-size: 11px;
+        }
+      }
+      
       /* Modal Styles - Clean Fullscreen Viewer */
       .modal {
         display: none;
