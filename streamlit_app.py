@@ -6,7 +6,7 @@ st.set_page_config(page_title="Bosch AR/VR Viewer", layout="wide", initial_sideb
 # Hide all Streamlit UI elements
 st.markdown("""
 <style>
-    [data-testid="stAppViewContainer"] { padding: 0 !important; background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%) !important; }
+    [data-testid="stAppViewContainer"] { padding: 0 !important; background: linear-gradient(135deg, #0f1e3a 0%, #1a2f52 100%) !important; }
     [data-testid="stHeader"] { display: none !important; }
     [data-testid="stToolbar"] { display: none !important; }
     .stMainBlockContainer { padding: 0 !important; }
@@ -77,7 +77,7 @@ grid_html = """
         width: 100vw; 
         height: 100vh; 
         overflow: hidden;
-        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+        background: linear-gradient(135deg, #0f1e3a 0%, #1a2f52 100%);
         font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
       }
       body.modal-open { overflow: hidden !important; }
@@ -125,7 +125,7 @@ grid_html = """
       }
       
       .import-input {
-        background: rgba(42, 42, 42, 0.9);
+        background: rgba(26, 47, 82, 0.9);
         border: 1px solid #e6001b;
         color: #ffffff;
         padding: 10px 12px;
@@ -147,7 +147,7 @@ grid_html = """
       }
       
       .import-select {
-        background: rgba(42, 42, 42, 0.9);
+        background: rgba(26, 47, 82, 0.9);
         border: 1px solid #e6001b;
         color: #ffffff;
         padding: 10px 12px;
@@ -160,7 +160,7 @@ grid_html = """
       }
       
       .import-select option {
-        background: #2a2a2a;
+        background: #1a2f52;
         color: #ffffff;
       }
       
@@ -211,7 +211,7 @@ grid_html = """
       }
       
       .card {
-        background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+        background: linear-gradient(135deg, #1a2f52 0%, #0f1e3a 100%);
         border-radius: 12px;
         overflow: hidden;
         border: 1px solid #e6001b44;
@@ -273,7 +273,7 @@ grid_html = """
         width: 100%;
         flex: 1;
         min-height: 200px;
-        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        background: linear-gradient(135deg, #081529 0%, #0f1e3a 100%);
         display: block;
       }
       
@@ -386,7 +386,7 @@ for model in models:
           camera-controls
           auto-rotate
           ar
-          style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);"></model-viewer>
+          style="background: linear-gradient(135deg, #081529 0%, #0f1e3a 100%);"></model-viewer>
       </div>
 """
 
@@ -487,7 +487,7 @@ grid_html += """
             camera-controls
             auto-rotate
             ar
-            style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);"></model-viewer>
+            style="background: linear-gradient(135deg, #081529 0%, #0f1e3a 100%);"></model-viewer>
         </div>
       `;
       
