@@ -1,12 +1,12 @@
 import streamlit as st
 from streamlit.components.v1 import html
 
-st.set_page_config(page_title="GBL Viewer", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Bosch AR/VR Viewer", layout="wide", initial_sidebar_state="collapsed")
 
 # Hide all Streamlit UI elements
 st.markdown("""
 <style>
-    [data-testid="stAppViewContainer"] { padding: 0 !important; background: #0f0f1e !important; }
+    [data-testid="stAppViewContainer"] { padding: 0 !important; background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%) !important; }
     [data-testid="stHeader"] { display: none !important; }
     [data-testid="stToolbar"] { display: none !important; }
     .stMainBlockContainer { padding: 0 !important; }
@@ -77,8 +77,8 @@ grid_html = """
         width: 100vw; 
         height: 100vh; 
         overflow: hidden;
-        background: #0f0f1e;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+        font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
       }
       body.modal-open { overflow: hidden !important; }
       
@@ -97,74 +97,95 @@ grid_html = """
       .page-title {
         font-size: 48px;
         font-weight: 700;
-        color: #00d4ff;
+        color: #fff;
         margin-bottom: 20px;
         text-align: center;
-        letter-spacing: 2px;
+        letter-spacing: 3px;
+      }
+      
+      .bosch-brand {
+        color: #e6001b;
+        font-weight: 900;
       }
       
       .import-section {
         display: flex;
         gap: 10px;
         margin-bottom: 20px;
-        background: rgba(0, 212, 255, 0.05);
+        background: rgba(230, 0, 27, 0.05);
         padding: 15px;
         border-radius: 8px;
-        border: 1px solid #00d4ff44;
+        border: 1px solid #e6001b66;
         width: 100%;
         max-width: 1800px;
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
+        backdrop-filter: blur(10px);
       }
       
       .import-input {
-        background: rgba(10, 10, 21, 0.8);
-        border: 1px solid #00d4ff;
-        color: #00d4ff;
+        background: rgba(42, 42, 42, 0.9);
+        border: 1px solid #e6001b;
+        color: #ffffff;
         padding: 10px 12px;
         border-radius: 4px;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-size: 12px;
         min-width: 250px;
+        transition: all 0.3s ease;
       }
       
       .import-input::placeholder {
-        color: #00d4ff88;
+        color: #888888;
+      }
+      
+      .import-input:focus {
+        border-color: #e6001b;
+        box-shadow: 0 0 15px rgba(230, 0, 27, 0.3);
+        outline: none;
       }
       
       .import-select {
-        background: rgba(10, 10, 21, 0.8);
-        border: 1px solid #00d4ff;
-        color: #00d4ff;
+        background: rgba(42, 42, 42, 0.9);
+        border: 1px solid #e6001b;
+        color: #ffffff;
         padding: 10px 12px;
         border-radius: 4px;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-size: 12px;
         cursor: pointer;
         min-width: 150px;
+        transition: all 0.3s ease;
       }
       
       .import-select option {
-        background: #0f0f1e;
-        color: #00d4ff;
+        background: #2a2a2a;
+        color: #ffffff;
+      }
+      
+      .import-select:focus {
+        border-color: #e6001b;
+        box-shadow: 0 0 15px rgba(230, 0, 27, 0.3);
+        outline: none;
       }
       
       .import-btn {
-        background: linear-gradient(135deg, #00d4ff 0%, #00ffff 100%);
-        color: #0f0f1e;
+        background: linear-gradient(135deg, #e6001b 0%, #ff1a33 100%);
+        color: #ffffff;
         border: none;
         padding: 10px 16px;
         border-radius: 4px;
         cursor: pointer;
         font-weight: 600;
         font-size: 12px;
-        transition: all 0.2s ease;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(230, 0, 27, 0.3);
       }
       
       .import-btn:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 25px rgba(230, 0, 27, 0.5);
       }
       
       .import-btn:active {
@@ -190,12 +211,12 @@ grid_html = """
       }
       
       .card {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
         border-radius: 12px;
         overflow: hidden;
-        border: 1px solid #00d4ff44;
+        border: 1px solid #e6001b44;
         transition: all 0.3s ease;
-        box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
+        box-shadow: 0 8px 32px rgba(230, 0, 27, 0.1);
         display: flex;
         flex-direction: column;
         height: 100%;
@@ -203,14 +224,14 @@ grid_html = """
       
       .card:hover {
         transform: translateY(-8px);
-        border-color: #00d4ff88;
-        box-shadow: 0 12px 48px rgba(0, 212, 255, 0.2);
+        border-color: #e6001b88;
+        box-shadow: 0 12px 48px rgba(230, 0, 27, 0.2);
       }
       
       .card-header {
         padding: 12px;
-        background: linear-gradient(135deg, #00d4ff22 0%, #0099ff22 100%);
-        border-bottom: 1px solid #00d4ff44;
+        background: linear-gradient(135deg, #e6001b22 0%, #ff1a3322 100%);
+        border-bottom: 1px solid #e6001b44;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -220,7 +241,7 @@ grid_html = """
       .card-title {
         font-size: 16px;
         font-weight: 700;
-        color: #00d4ff;
+        color: #ffffff;
         margin: 0;
       }
       
@@ -230,8 +251,8 @@ grid_html = """
       }
       
       .fullscreen-btn {
-        background: #00d4ff;
-        color: #0f0f1e;
+        background: linear-gradient(135deg, #e6001b 0%, #ff1a33 100%);
+        color: #ffffff;
         border: none;
         padding: 6px 10px;
         border-radius: 4px;
@@ -240,18 +261,19 @@ grid_html = """
         font-size: 11px;
         transition: all 0.2s ease;
         flex-shrink: 0;
+        box-shadow: 0 2px 8px rgba(230, 0, 27, 0.3);
       }
       
       .fullscreen-btn:hover {
-        background: #00ffff;
         transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(230, 0, 27, 0.5);
       }
       
       model-viewer {
         width: 100%;
         flex: 1;
         min-height: 200px;
-        background: linear-gradient(135deg, #0a0a15 0%, #1a1a2e 100%);
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
         display: block;
       }
       
@@ -287,7 +309,7 @@ grid_html = """
       }
       
       .close-btn {
-        background: #ff3333;
+        background: linear-gradient(135deg, #e6001b 0%, #ff1a33 100%);
         color: white;
         border: none;
         padding: 10px 16px;
@@ -296,11 +318,12 @@ grid_html = """
         font-weight: 600;
         font-size: 14px;
         transition: all 0.2s ease;
+        box-shadow: 0 4px 15px rgba(230, 0, 27, 0.3);
       }
       
       .close-btn:hover {
-        background: #ff5555;
-        transform: scale(1.05);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(230, 0, 27, 0.5);
       }
       
       .modal-viewer-container {
@@ -325,7 +348,7 @@ grid_html = """
 </head>
 <body>
   <div class="container">
-    <div class="page-title">Bosch AR/VR</div>
+    <div class="page-title"><span class="bosch-brand">BOSCH</span> AR/VR</div>
     
     <div class="import-section">
       <select class="import-select" id="viewerPosition">
@@ -363,7 +386,7 @@ for model in models:
           camera-controls
           auto-rotate
           ar
-          style="background: linear-gradient(135deg, #0a0a15 0%, #1a1a2e 100%);"></model-viewer>
+          style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);"></model-viewer>
       </div>
 """
 
@@ -464,7 +487,7 @@ grid_html += """
             camera-controls
             auto-rotate
             ar
-            style="background: linear-gradient(135deg, #0a0a15 0%, #1a1a2e 100%);"></model-viewer>
+            style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);"></model-viewer>
         </div>
       `;
       
