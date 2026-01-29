@@ -69,9 +69,9 @@ grid_html = """
     <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body { margin: 0; padding: 0; }
+      html, body { margin: 0; padding: 0; width: 100%; height: 100%; }
       body { background: #0f0f1e; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-y: auto; }
-      body.modal-open { overflow: hidden; }
+      body.modal-open { overflow: hidden; width: 100%; height: 100vh; }
       .container { max-width: 1400px; margin: 0 auto; }
       .grid {
         display: grid;
@@ -145,40 +145,41 @@ grid_html = """
         color: #80ff00;
       }
       
-      /* Modal Styles */
+      /* Modal Styles - Truly Fullscreen */
       .modal {
         display: none;
         position: fixed;
         top: 0;
         left: 0;
+        right: 0;
+        bottom: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.95);
+        background: rgba(0, 0, 0, 0.98);
         z-index: 9999;
         margin: 0;
         padding: 0;
         overflow: hidden;
+        flex-direction: column;
       }
       .modal.active {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
       }
       .modal-header {
-        position: absolute;
-        top: 15px;
-        left: 20px;
-        right: 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: #00d4ff;
-        z-index: 10001;
+        padding: 20px 30px;
+        background: rgba(0, 0, 0, 0.7);
+        border-bottom: 2px solid #00d4ff;
+        flex-shrink: 0;
+        height: 70px;
+        box-sizing: border-box;
       }
       .modal-title {
-        font-size: 22px;
+        font-size: 24px;
         font-weight: 700;
+        color: #00d4ff;
         margin: 0;
       }
       .close-btn {
@@ -191,16 +192,26 @@ grid_html = """
         font-weight: 600;
         font-size: 14px;
         transition: all 0.2s ease;
+        flex-shrink: 0;
       }
       .close-btn:hover {
         background: #ff5555;
         transform: scale(1.05);
       }
-      .modal-content {
-        width: calc(100vw - 40px);
-        height: calc(100vh - 70px);
-        max-width: 1880px;
+      .modal-viewer-container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        overflow: hidden;
+      }
+      #fullscreenViewer {
+        width: 100%;
+        height: 100%;
+        max-width: 1920px;
         max-height: 1010px;
+        border-radius: 8px;
       }
     </style>
 </head>
@@ -241,7 +252,7 @@ grid_html += """
       <h2 class="modal-title" id="modalTitle">3D Model</h2>
       <button class="close-btn" onclick="closeFullscreen()">✕ Close</button>
     </div>
-    <div id="modalContent" class="modal-content">
+    <div class="modal-viewer-container">
       <model-viewer
         id="fullscreenViewer"
         alt="3D Model"
@@ -251,8 +262,7 @@ grid_html += """
         ar
         camera-orbit="0deg 75deg 2.5m"
         min-camera-orbit="auto auto auto"
-        max-camera-orbit="auto auto auto"
-        style="width: 100%; height: 100%; border-radius: 8px;">
+        max-camera-orbit="auto auto auto">
       </model-viewer>
     </div>
   </div>
@@ -282,7 +292,7 @@ grid_html += """
       }
     });
 
-    // Close modal when clicking outside
+    // Close modal when clicking outside the viewer
     document.getElementById('fullscreenModal').addEventListener('click', (e) => {
       if (e.target.id === 'fullscreenModal') {
         closeFullscreen();
