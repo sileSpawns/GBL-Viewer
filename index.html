@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GBL Viewer</title>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@1.16.0/dist/model-viewer.min.js"></script>
+  <style>
+    html,body{height:100%;margin:0;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    .stage{display:flex;align-items:center;justify-content:center;height:100%;background:#111}
+    model-viewer{width:min(1000px,96vw);height:72vh;background:#222;border-radius:12px;overflow:hidden}
+    .progress-bar{position:absolute;left:0;right:0;top:0;height:6px;background:transparent}
+    .progress-bar .update-bar{height:100%;width:0;background:linear-gradient(90deg,#4facfe,#00f2fe);transition:width .1s}
+    .progress-bar.hide{display:none}
+    #ar-button{position:relative;margin:8px;padding:8px 12px;border-radius:6px;border:none;background:#1a73e8;color:#fff;font-weight:600}
+    #ar-prompt{position:absolute;bottom:16px;left:16px;background:rgba(0,0,0,.6);padding:8px;border-radius:8px;display:flex;align-items:center}
+    #ar-prompt img{width:36px;height:36px}
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <model-viewer id="mv"
+      src="test.glb"
+      alt="A 3D model"
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      camera-controls
+      exposure="1"
+      shadow-intensity="1"
+      poster="poster.png"
+      style="--poster-color: #222">
+
+      <div class="progress-bar hide" slot="progress-bar">
+        <div class="update-bar"></div>
+      </div>
+
+      <button slot="ar-button" id="ar-button">View in your space</button>
+
+      <div id="ar-prompt">
+        <img src="https://modelviewer.dev/shared-assets/icons/hand.png" alt="AR prompt">
+      </div>
+    </model-viewer>
+  </div>
+
+  <script>
+    const mv = document.getElementById('mv');
+    const progressBar = mv.querySelector('.progress-bar');
+    const updateBar = mv.querySelector('.update-bar');
+
+    mv.addEventListener('progress', (event) => {
+      const total = event.detail.totalProgress || 0;
+      const pct = Math.min(100, Math.round(total * 100));
+      updateBar.style.width = pct + '%';
+      progressBar.classList.remove('hide');
+      if (pct >= 100) {
+        setTimeout(() => progressBar.classList.add('hide'), 400);
+      }
+    });
+
+    mv.addEventListener('error', (e) => {
+      console.error('model-viewer error', e);
+      // show a minimal fallback UI
+      mv.style.background = '#550000';
+    });
+
+    // Optional: show AR hint when AR becomes available
+    mv.addEventListener('ar-status', (e) => {
+      // ar-status events: "not-presenting", "session-started", etc.
+      // keep this small; user can expand behavior if desired
+    });
+  </script>
+</body>
+</html>
