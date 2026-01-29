@@ -69,7 +69,9 @@ grid_html = """
     <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { background: #0f0f1e; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+      html, body { margin: 0; padding: 0; }
+      body { background: #0f0f1e; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-y: auto; }
+      body.modal-open { overflow: hidden; }
       .container { max-width: 1400px; margin: 0 auto; }
       .grid {
         display: grid;
@@ -123,6 +125,7 @@ grid_html = """
         font-weight: 600;
         font-size: 12px;
         transition: all 0.2s ease;
+        flex-shrink: 0;
       }
       .fullscreen-btn:hover {
         background: #00ffff;
@@ -142,6 +145,7 @@ grid_html = """
         color: #80ff00;
       }
       
+      /* Modal Styles */
       .modal {
         display: none;
         position: fixed;
@@ -151,7 +155,9 @@ grid_html = """
         height: 100%;
         background: rgba(0, 0, 0, 0.95);
         z-index: 9999;
+        margin: 0;
         padding: 0;
+        overflow: hidden;
       }
       .modal.active {
         display: flex;
@@ -161,17 +167,17 @@ grid_html = """
       }
       .modal-header {
         position: absolute;
-        top: 20px;
+        top: 15px;
         left: 20px;
         right: 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         color: #00d4ff;
-        z-index: 10000;
+        z-index: 10001;
       }
       .modal-title {
-        font-size: 24px;
+        font-size: 22px;
         font-weight: 700;
         margin: 0;
       }
@@ -191,10 +197,10 @@ grid_html = """
         transform: scale(1.05);
       }
       .modal-content {
-        width: 90vw;
-        height: 90vh;
-        max-width: 1900px;
-        max-height: 1050px;
+        width: calc(100vw - 40px);
+        height: calc(100vh - 70px);
+        max-width: 1880px;
+        max-height: 1010px;
       }
     </style>
 </head>
@@ -220,8 +226,7 @@ for model in models:
           camera-controls
           auto-rotate
           ar
-          style="background: linear-gradient(135deg, #0a0a15 0%, #1a1a2e 100%);">
-        </model-viewer>
+          style="background: linear-gradient(135deg, #0a0a15 0%, #1a1a2e 100%);"></model-viewer>
         <div class="controls">💡 Drag to rotate • Scroll to zoom • Click Fullscreen for expanded view</div>
       </div>
 """
@@ -261,13 +266,13 @@ grid_html += """
       viewer.src = modelUrl;
       title.textContent = modelName;
       modal.classList.add('active');
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add('modal-open');
     }
 
     function closeFullscreen() {
       const modal = document.getElementById('fullscreenModal');
       modal.classList.remove('active');
-      document.body.style.overflow = 'auto';
+      document.body.classList.remove('modal-open');
     }
 
     // Close modal on escape key
