@@ -145,7 +145,7 @@ grid_html = """
         color: #80ff00;
       }
       
-      /* Modal Styles - Truly Fullscreen */
+      /* Modal Styles - Exactly One Monitor Height */
       .modal {
         display: none;
         position: fixed;
@@ -153,8 +153,8 @@ grid_html = """
         left: 0;
         right: 0;
         bottom: 0;
-        width: 100%;
-        height: 100%;
+        width: 100vw;
+        height: 100vh;
         background: rgba(0, 0, 0, 0.98);
         z-index: 9999;
         margin: 0;
@@ -199,18 +199,20 @@ grid_html = """
         transform: scale(1.05);
       }
       .modal-viewer-container {
-        flex: 1;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 20px;
+        width: 100vw;
+        height: calc(100vh - 70px);
+        padding: 0;
+        margin: 0;
         overflow: hidden;
       }
       #fullscreenViewer {
         width: 100%;
         height: 100%;
         max-width: 1920px;
-        max-height: 1010px;
+        max-height: calc(100vh - 70px);
         border-radius: 8px;
       }
     </style>
