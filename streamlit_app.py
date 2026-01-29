@@ -133,6 +133,23 @@ grid_html = """
         color: #00d4ff88;
       }
       
+      .import-select {
+        background: rgba(10, 10, 21, 0.8);
+        border: 1px solid #00d4ff;
+        color: #00d4ff;
+        padding: 10px 12px;
+        border-radius: 4px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 12px;
+        cursor: pointer;
+        min-width: 150px;
+      }
+      
+      .import-select option {
+        background: #0f0f1e;
+        color: #00d4ff;
+      }
+      
       .import-btn {
         background: linear-gradient(135deg, #00d4ff 0%, #00ffff 100%);
         color: #0f0f1e;
@@ -311,6 +328,15 @@ grid_html = """
     <div class="page-title">Bosch AR/VR</div>
     
     <div class="import-section">
+      <select class="import-select" id="viewerPosition">
+        <option value="append">➕ Add to End</option>
+        <option value="1">Position 1 (Astronaut)</option>
+        <option value="2">Position 2 (Tower)</option>
+        <option value="3">Position 3 (Drone)</option>
+        <option value="4">Position 4 (Candle)</option>
+        <option value="5">Position 5 (Helmet 1)</option>
+        <option value="6">Position 6 (Helmet 2)</option>
+      </select>
       <input type="text" class="import-input" id="modelUrl" placeholder="Paste GLB file URL here">
       <input type="text" class="import-input" id="modelName" placeholder="Model name (optional)" style="max-width: 150px;">
       <button class="import-btn" onclick="importModel()">+ Import Model</button>
@@ -400,8 +426,10 @@ grid_html += """
     function importModel() {
       const urlInput = document.getElementById('modelUrl');
       const nameInput = document.getElementById('modelName');
+      const positionSelect = document.getElementById('viewerPosition');
       const modelUrl = urlInput.value.trim();
       const modelName = nameInput.value.trim() || 'Custom Model';
+      const position = positionSelect.value;
       
       if (!modelUrl) {
         alert('Please enter a model URL');
@@ -440,15 +468,28 @@ grid_html += """
         </div>
       `;
       
-      // Add to grid
       const grid = document.getElementById('modelGrid');
-      const newCard = document.createElement('div');
-      newCard.innerHTML = cardHTML;
-      grid.appendChild(newCard.firstElementChild);
+      const newCardWrapper = document.createElement('div');
+      newCardWrapper.innerHTML = cardHTML;
+      const newCard = newCardWrapper.firstElementChild;
       
-      // Clear inputs
+      // Add to grid at selected position
+      if (position === 'append') {
+        grid.appendChild(newCard);
+      } else {
+        const posIndex = parseInt(position) - 1;
+        const cards = grid.querySelectorAll('.card');
+        if (posIndex < cards.length) {
+          cards[posIndex].replaceWith(newCard);
+        } else {
+          grid.appendChild(newCard);
+        }
+      }
+      
+      // Clear inputs and reset position
       urlInput.value = '';
       nameInput.value = '';
+      positionSelect.value = 'append';
       urlInput.focus();
     }
 
