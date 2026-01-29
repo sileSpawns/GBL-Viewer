@@ -92,9 +92,60 @@ grid_html = """
         font-size: 48px;
         font-weight: 700;
         color: #00d4ff;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         text-align: center;
         letter-spacing: 2px;
+      }
+      
+      .import-section {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        background: rgba(0, 212, 255, 0.05);
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #00d4ff44;
+        width: 100%;
+        max-width: 1800px;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      
+      .import-input {
+        background: rgba(10, 10, 21, 0.8);
+        border: 1px solid #00d4ff;
+        color: #00d4ff;
+        padding: 10px 12px;
+        border-radius: 4px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 12px;
+        min-width: 250px;
+      }
+      
+      .import-input::placeholder {
+        color: #00d4ff88;
+      }
+      
+      .import-btn {
+        background: linear-gradient(135deg, #00d4ff 0%, #00ffff 100%);
+        color: #0f0f1e;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 12px;
+        transition: all 0.2s ease;
+      }
+      
+      .import-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+      }
+      
+      .import-btn:active {
+        transform: scale(0.98);
       }
       
       .grid-wrapper {
@@ -252,13 +303,20 @@ grid_html = """
 <body>
   <div class="container">
     <div class="page-title">Bosch AR/VR</div>
+    
+    <div class="import-section">
+      <input type="text" class="import-input" id="modelUrl" placeholder="Paste GLB file URL here">
+      <input type="text" class="import-input" id="modelName" placeholder="Model name (optional)" style="max-width: 150px;">
+      <button class="import-btn" onclick="importModel()">+ Import Model</button>
+    </div>
+    
     <div class="grid-wrapper">
-      <div class="grid">
+      <div class="grid" id="modelGrid">
 """
 
 for model in models:
     grid_html += f"""
-      <div class="card">
+      <div class="card" data-model-id="default-{model["name"]}">
         <div class="card-header">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span class="card-emoji">{model["emoji"]}</span>
@@ -330,6 +388,79 @@ grid_html += """
       if (e.target.id === 'fullscreenModal') {
         closeFullscreen();
       }
+    });
+
+    // Import model function
+    function importModel() {
+      const urlInput = document.getElementById('modelUrl');
+      const nameInput = document.getElementById('modelName');
+      const modelUrl = urlInput.value.trim();
+      const modelName = nameInput.value.trim() || 'Custom Model';
+      
+      if (!modelUrl) {
+        alert('Please enter a model URL');
+        return;
+      }
+      
+      if (!modelUrl.toLowerCase().endsWith('.glb') && !modelUrl.toLowerCase().includes('.glb?')) {
+        alert('Please provide a valid GLB file URL');
+        return;
+      }
+      
+      // Create unique ID for this model
+      const modelId = 'custom-' + Date.now();
+      
+      // Create card HTML
+      const cardHTML = `
+        <div class="card" data-model-id="${modelId}">
+          <div class="card-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="card-emoji">📦</span>
+              <span class="card-title">${modelName}</span>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button class="fullscreen-btn" onclick="openFullscreen('${modelUrl}', '${modelName}')">⛶</button>
+              <button class="fullscreen-btn" style="background: #ff3333; padding: 4px 8px;" onclick="removeModel('${modelId}')">✕</button>
+            </div>
+          </div>
+          <model-viewer
+            src="${modelUrl}"
+            alt="${modelName}"
+            shadow-intensity="1"
+            camera-controls
+            auto-rotate
+            ar
+            style="background: linear-gradient(135deg, #0a0a15 0%, #1a1a2e 100%);"></model-viewer>
+        </div>
+      `;
+      
+      // Add to grid
+      const grid = document.getElementById('modelGrid');
+      const newCard = document.createElement('div');
+      newCard.innerHTML = cardHTML;
+      grid.appendChild(newCard.firstElementChild);
+      
+      // Clear inputs
+      urlInput.value = '';
+      nameInput.value = '';
+      urlInput.focus();
+    }
+
+    // Remove model function
+    function removeModel(modelId) {
+      const card = document.querySelector(`[data-model-id="${modelId}"]`);
+      if (card) {
+        card.remove();
+      }
+    }
+
+    // Allow Enter key to import
+    document.getElementById('modelUrl').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') importModel();
+    });
+    
+    document.getElementById('modelName').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') importModel();
     });
   </script>
 </body>
